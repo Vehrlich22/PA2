@@ -12,7 +12,7 @@ public class TinyE {
             if (mode == Mode.ECB) {
 //                C0 = E(P0, K)
 //                C1 = E(P1, K)
-
+                
 
             } else if (mode == Mode.CBC) {
 //                C0 = E(IV  P0, K)
@@ -52,10 +52,21 @@ public class TinyE {
             return (Integer[]) plaintext.toArray();
 	}
 	
-        public static Integer[] teaEncryption(Integer[] iv, Integer[] key) {
+        public static Integer[] teaEncryption(Integer[] iv, Integer[] K) {
             ArrayList<Integer> ciphertext = new ArrayList<>();
             
-            
+            Integer L = iv[0];
+            Integer R = iv[1];
+            Integer delta = 0x9e3779b9;
+            Integer sum = 0;
+            for (int i = 0; i < 32; i++) {
+                sum += delta;
+                L += ((R<<4)+K[0])^(R+sum)^((R>>5)+K[1]);
+                R += ((L<<4)+K[2])^(L+sum)^((L>>5)+K[3]);
+            }
+  
+            ciphertext.add(L);
+            ciphertext.add(R);
             
             return (Integer[]) ciphertext.toArray();
         }

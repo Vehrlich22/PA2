@@ -60,10 +60,21 @@ public class TinyE {
             return (Integer[]) ciphertext.toArray();
         }
         
-        public static Integer[] teaDecryption(Integer[] iv, Integer[] key) {
+        public static Integer[] teaDecryption(Integer[] iv, Integer[] K) {
             ArrayList<Integer> plaintext = new ArrayList<>();
             
+            Integer L = iv[0];
+            Integer R = iv[1];   
+            Integer delta = 0x9E3779B9;
+            Integer sum = delta << 5;
             
+            for (int i = 0; i < 32; i++) {
+                R -= ((L << 4) + K[2]) ^ (L + sum) ^ ((L >> 5) + K[3]);
+                L -= ((R << 4) + K[0]) ^ (R + sum) ^ ((R >> 5) + K[1]);
+            }
+            
+            plaintext.add(L);
+            plaintext.add(R);
             
             return (Integer[]) plaintext.toArray();
         }

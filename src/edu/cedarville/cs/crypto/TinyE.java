@@ -88,6 +88,7 @@ public class TinyE {
             for (int i = 0; i < 32; i++) {
                 R -= ((L << 4) + K[2]) ^ (L + sum) ^ ((L >> 5) + K[3]);
                 L -= ((R << 4) + K[0]) ^ (R + sum) ^ ((R >> 5) + K[1]);
+                sum -= delta;
             }
             
             plaintext[0] = L;

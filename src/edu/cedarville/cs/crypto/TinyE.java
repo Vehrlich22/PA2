@@ -6,20 +6,20 @@ public class TinyE {
 	
 	public static enum Mode { ECB, CBC, CTR };
 	
-	public Integer[] encrypt(Integer[] plaintext, Integer[] key, Mode mode, Integer[] iv) {
+	public Integer[] encrypt(Integer[] p, Integer[] k, Mode m, Integer[] iv) {
             ArrayList<Integer> ciphertext = new ArrayList<>();
             
-            if (mode == Mode.ECB) {
+            if (m == Mode.ECB) {
 //                C0 = E(P0, K)
 //                C1 = E(P1, K)
                 Integer[] ciphertextHolder;
-                for (int i = 0; i < plaintext.length; i+=2) {
-                    ciphertextHolder = teaEncryption(plaintext[i], plaintext[i+1], key);
+                for (int i = 0; i < p.length; i+=2) {
+                    ciphertextHolder = teaEncryption(p[i], p[i+1], k);
                     ciphertext.add(ciphertextHolder[0]);
                     ciphertext.add(ciphertextHolder[1]);
                 }
 
-            } else if (mode == Mode.CBC) {
+            } else if (m == Mode.CBC) {
 //                C0 = E(IV  P0, K)
 //                C1 = E(C0  P1, K)
                 
@@ -34,20 +34,20 @@ public class TinyE {
             return (Integer[]) ciphertext.toArray();
 	}
 
-	public Integer[] decrypt(Integer[] ciphertext, Integer[] key, Mode mode, Integer[] iv) {
+	public Integer[] decrypt(Integer[] c, Integer[] k, Mode m, Integer[] iv) {
             ArrayList<Integer> plaintext = new ArrayList<>();
             
-            if (mode == Mode.ECB) {
+            if (m == Mode.ECB) {
 //                P0 = D(C0, K)
 //                P1 = D(C1, K)
                 Integer[] plaintextHolder;
-                for (int i = 0; i < ciphertext.length; i+=2) {
-                    plaintextHolder = teaDecryption(ciphertext[i], ciphertext[i+1], key);
+                for (int i = 0; i < c.length; i+=2) {
+                    plaintextHolder = teaDecryption(c[i], c[i+1], k);
                     plaintext.add(plaintextHolder[0]);
                     plaintext.add(plaintextHolder[1]);
                 }
 
-            } else if (mode == Mode.CBC) {
+            } else if (m == Mode.CBC) {
 //                P0 = IV  D(C0, K)
 //                P1 = C0  D(C1, K)
 

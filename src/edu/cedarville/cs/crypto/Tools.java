@@ -32,7 +32,7 @@ public class Tools {
                     d = 0x00;
                 }  
                 
-                ints[i] = (a | b | c | d);
+                ints[i / 4] = (a | b | c | d);
             }
             
             return ints;
@@ -59,10 +59,10 @@ public class Tools {
             byte[] bytes = new byte[ints.length * 4];
             
             for (int i = 0; i < ints.length * 4; i += 4) {
-                bytes[  i  ] = (byte) ((ints[i] >> 24) & 0x000000FF);
-                bytes[i + 1] = (byte) ((ints[i] >> 16) & 0x000000FF);
-                bytes[i + 2] = (byte) ((ints[i] >>  8) & 0x000000FF);
-                bytes[i + 3] = (byte) ( ints[i]        & 0x000000FF);
+                bytes[  i  ] = (byte) ((ints[i / 4] >> 24) & 0x000000FF);
+                bytes[i + 1] = (byte) ((ints[i / 4] >> 16) & 0x000000FF);
+                bytes[i + 2] = (byte) ((ints[i / 4] >>  8) & 0x000000FF);
+                bytes[i + 3] = (byte) ( ints[i / 4]        & 0x000000FF);
             }
             
             return bytes;

@@ -49,7 +49,13 @@ public class Tools {
 	}
 	
 	public static String convertFromIntsToHexString(Integer[] ints) {
-            return null;
+            String hex = "";
+            
+            for (Integer i : ints) {
+                hex += Integer.toHexString(i);
+            }
+            
+            return hex;
 	}
 	
 }

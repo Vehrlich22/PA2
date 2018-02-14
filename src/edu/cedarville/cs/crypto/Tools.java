@@ -1,63 +1,58 @@
 package edu.cedarville.cs.crypto;
 
-import java.util.ArrayList;
-
 public class Tools {
 	
 	public static Integer[] convertFromBytesToInts(byte[] bs) {
-            ArrayList<Integer> ints = new ArrayList<>();
+            Integer[] ints = new Integer[bs.length / 4];
             
             for (int i = 0; i < bs.length; i += 4) {
-                byte a, b, c, d;
+                Integer a, b, c, d;
                 
                 if (i < bs.length) {
-                    a = (byte) (bs[  i  ] & 0xFF);
+                    a = (Integer) ((bs[  i  ] & 0xFF) << 24);
                 } else {
                     a = 0x00;
                 }
                 
                 if (i+1 < bs.length) {
-                    b = (byte) (bs[i + 1] & 0xFF);
+                    b = (Integer) ((bs[i + 1] & 0xFF) << 16);
                 } else {
                     b = 0x00;
                 } 
                 
                 if (i+2 < bs.length) {
-                    c = (byte) (bs[i + 2] & 0xFF);
+                    c = (Integer) ((bs[i + 2] & 0xFF) << 8);
                 } else {
                     c = 0x00;
                 } 
                 
                 if (i+3 < bs.length) {
-                    d = (byte) (bs[i + 3] & 0xFF);
+                    d = (Integer) (bs[i + 3] & 0xFF);
                 } else {
                     d = 0x00;
                 }  
                 
-                ints.add(a | b | c | d);
+                ints[i] = (a | b | c | d);
             }
             
-            return (Integer[]) ints.toArray();
+            return ints;
 	}
 	
 	public static Integer[] convertFromHexStringToInts(String s) {
-            ArrayList<Integer> ints = new ArrayList<>();
+            Integer[] ints = new Integer[s.length() / 8];
             
-            for (int i = 0; i < s.length(); i += 4) {
+            for (int i = 0; i < s.length(); i += 8) {
                 String hex = "";
-                if (i + 4 < s.length()) {
-                    hex = s.substring(i, i + 4);
-                } else if (i + 3 < s.length()) {
-                    hex = s.substring(i, i + 3) + "0000";
-                } else if (i + 2 < s.length()) {
-                    hex = s.substring(i, i + 2) + "00000000";
-                } else if (i + 1 < s.length()) {
-                    hex = s.substring(i, i + 1) + "000000000000";
+                if (i + 8 <= s.length()) {
+                    hex = s.substring(i, i + 8);
+                } else {
+                    hex = s.substring(i);
+                    hex = String.format("%-8s", hex).replace(' ', '0');
                 }
-                ints.add((int) Long.parseLong(hex, 16));
+                ints[i / 8] = (int) Long.parseLong(hex, 16);
             }
             
-            return (Integer[]) ints.toArray();
+            return ints;
 	}
 	
 	public static byte[] convertFromIntsToBytes(Integer[] ints) {

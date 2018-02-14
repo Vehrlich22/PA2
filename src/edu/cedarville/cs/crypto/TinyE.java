@@ -7,16 +7,16 @@ public class TinyE {
 	public static enum Mode { ECB, CBC, CTR };
 	
 	public Integer[] encrypt(Integer[] p, Integer[] k, Mode m, Integer[] iv) {
-            ArrayList<Integer> ciphertext = new ArrayList<>();
+            Integer[] ciphertext = new Integer[p.length];
             
             if (m == Mode.ECB) {
 //                C0 = E(P0, K)
 //                C1 = E(P1, K)
                 Integer[] ciphertextHolder;
-                for (int i = 0; i < p.length; i+=2) {
-                    ciphertextHolder = teaEncryption(p[i], p[i+1], k);
-                    ciphertext.add(ciphertextHolder[0]);
-                    ciphertext.add(ciphertextHolder[1]);
+                for (int i = 0; i < p.length; i += 2) {
+                    ciphertextHolder = teaEncryption(p[i], p[i + 1], k);
+                    ciphertext[  i  ] = ciphertextHolder[0];
+                    ciphertext[i + 1] = ciphertextHolder[1];
                 }
 
             } else if (m == Mode.CBC) {
@@ -31,11 +31,11 @@ public class TinyE {
 
             }
             
-            return (Integer[]) ciphertext.toArray();
+            return ciphertext;
 	}
 
 	public Integer[] decrypt(Integer[] c, Integer[] k, Mode m, Integer[] iv) {
-            ArrayList<Integer> plaintext = new ArrayList<>();
+            Integer[] plaintext = new Integer[c.length];
             
             if (m == Mode.ECB) {
 //                P0 = D(C0, K)
@@ -43,8 +43,8 @@ public class TinyE {
                 Integer[] plaintextHolder;
                 for (int i = 0; i < c.length; i+=2) {
                     plaintextHolder = teaDecryption(c[i], c[i+1], k);
-                    plaintext.add(plaintextHolder[0]);
-                    plaintext.add(plaintextHolder[1]);
+                    plaintext[  i  ] = plaintextHolder[0];
+                    plaintext[i + 1] = plaintextHolder[1];
                 }
 
             } else if (m == Mode.CBC) {
@@ -59,28 +59,28 @@ public class TinyE {
 
             }
             
-            return (Integer[]) plaintext.toArray();
+            return plaintext;
 	}
 	
         public static Integer[] teaEncryption(Integer L, Integer R, Integer[] K) {
-            ArrayList<Integer> ciphertext = new ArrayList<>();
+            Integer[] ciphertext = new Integer[2];
             
             Integer delta = 0x9e3779b9;
             Integer sum = 0;
             for (int i = 0; i < 32; i++) {
                 sum += delta;
-                L += ((R<<4)+K[0])^(R+sum)^((R>>5)+K[1]);
-                R += ((L<<4)+K[2])^(L+sum)^((L>>5)+K[3]);
+                L += ((R << 4) + K[0]) ^ (R + sum) ^ ((R >> 5) + K[1]);
+                R += ((L << 4) + K[2]) ^ (L + sum) ^ ((L >> 5) + K[3]);
             }
   
-            ciphertext.add(L);
-            ciphertext.add(R);
+            ciphertext[0] = L;
+            ciphertext[1] = R;
             
-            return (Integer[]) ciphertext.toArray();
+            return ciphertext;
         }
         
         public static Integer[] teaDecryption(Integer L, Integer R, Integer[] K) {
-            ArrayList<Integer> plaintext = new ArrayList<>();
+            Integer[] plaintext = new Integer[2];
             
             Integer delta = 0x9E3779B9;
             Integer sum = delta << 5;
@@ -90,9 +90,9 @@ public class TinyE {
                 L -= ((R << 4) + K[0]) ^ (R + sum) ^ ((R >> 5) + K[1]);
             }
             
-            plaintext.add(L);
-            plaintext.add(R);
+            plaintext[0] = L;
+            plaintext[1] = R;
             
-            return (Integer[]) plaintext.toArray();
+            return plaintext;
         }
 }

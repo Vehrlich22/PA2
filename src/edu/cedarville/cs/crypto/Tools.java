@@ -41,7 +41,23 @@ public class Tools {
 	}
 	
 	public static Integer[] convertFromHexStringToInts(String s) {
-            return null;
+            ArrayList<Integer> ints = new ArrayList<>();
+            
+            for (int i = 0; i < s.length(); i+= 4) {
+                String hex = "";
+                if (i + 4 < s.length()) {
+                    hex = s.substring(i, i + 4);
+                } else if (i + 3 < s.length()) {
+                    hex = s.substring(i, i + 3) + "0000";
+                } else if (i + 2 < s.length()) {
+                    hex = s.substring(i, i + 2) + "00000000";
+                } else if (i + 1 < s.length()) {
+                    hex = s.substring(i, i + 1) + "000000000000";
+                }
+                ints.add((int) Long.parseLong(hex, 16));
+            }
+            
+            return (Integer[]) ints.toArray();
 	}
 	
 	public static byte[] convertFromIntsToBytes(Integer[] ints) {

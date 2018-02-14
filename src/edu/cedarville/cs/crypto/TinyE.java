@@ -1,7 +1,5 @@
 package edu.cedarville.cs.crypto;
 
-import java.util.ArrayList;
-
 public class TinyE {
 	
 	public static enum Mode { ECB, CBC, CTR };

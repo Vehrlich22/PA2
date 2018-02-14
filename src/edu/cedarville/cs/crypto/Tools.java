@@ -7,11 +7,11 @@ public class Tools {
 	public static Integer[] convertFromBytesToInts(byte[] bs) {
             ArrayList<Integer> ints = new ArrayList<>();
             
-            for (int i = 0; i < bs.length; i+=4) {
+            for (int i = 0; i < bs.length; i += 4) {
                 byte a, b, c, d;
                 
                 if (i < bs.length) {
-                    a = (byte) (bs[i] & 0xFF);
+                    a = (byte) (bs[  i  ] & 0xFF);
                 } else {
                     a = 0x00;
                 }
@@ -43,7 +43,7 @@ public class Tools {
 	public static Integer[] convertFromHexStringToInts(String s) {
             ArrayList<Integer> ints = new ArrayList<>();
             
-            for (int i = 0; i < s.length(); i+= 4) {
+            for (int i = 0; i < s.length(); i += 4) {
                 String hex = "";
                 if (i + 4 < s.length()) {
                     hex = s.substring(i, i + 4);
@@ -61,7 +61,16 @@ public class Tools {
 	}
 	
 	public static byte[] convertFromIntsToBytes(Integer[] ints) {
-            return null;
+            byte[] bytes = new byte[ints.length * 4];
+            
+            for (int i = 0; i < ints.length * 4; i += 4) {
+                bytes[  i  ] = (byte) ((ints[i] >> 24) & 0x000000FF);
+                bytes[i + 1] = (byte) ((ints[i] >> 16) & 0x000000FF);
+                bytes[i + 2] = (byte) ((ints[i] >>  8) & 0x000000FF);
+                bytes[i + 3] = (byte) ( ints[i]        & 0x000000FF);
+            }
+            
+            return bytes;
 	}
 	
 	public static String convertFromIntsToHexString(Integer[] ints) {
@@ -73,5 +82,4 @@ public class Tools {
             
             return hex;
 	}
-	
 }

@@ -36,10 +36,16 @@ public class TinyE {
                     }
                 }
 
-            } else {
+            } else if(m == Mode.CTR){
 //                C0 = P0  E(IV, K)
 //                C1 = P1  E(IV+1, K)
+                Integer[] ciphertextHolder;
 
+                for (int i = 0; i < p.length; i += 2) {
+                    ciphertextHolder = teaEncryption(iv[0] + i,iv[1] + i, k);
+                    ciphertext[  i  ] = p[i]^ciphertextHolder[0];
+                    ciphertext[i + 1] = p[i+1]^ciphertextHolder[1];
+                }
 
             }
             
@@ -68,17 +74,23 @@ public class TinyE {
                         plaintextHolder = teaDecryption(c[i], c[i+1], k);
                         plaintext[  i  ] = iv[0]^plaintextHolder[0];
                         plaintext[i + 1] = iv[1]^plaintextHolder[1];
-                    }
+                    }else{
                     
-                    plaintextHolder = teaDecryption(c[i], c[i+1], k);
-                    plaintext[  i  ] = c[i-2]^plaintextHolder[0];
-                    plaintext[i + 1] = c[i-1]^plaintextHolder[1];
+                        plaintextHolder = teaDecryption(c[i], c[i+1], k);
+                        plaintext[  i  ] = c[i-2]^plaintextHolder[0];
+                        plaintext[i + 1] = c[i-1]^plaintextHolder[1];
+                    }
                 }
 
-            } else {
+            } else if(m == Mode.CTR) {
 //                P0 = C0  E(IV, K)
 //                P1 = C1  E(IV+1, K)
-
+                Integer[] plaintextHolder;
+                for (int i = 0; i < c.length; i+=2) {
+                    plaintextHolder = teaEncryption(iv[0] + i,iv[1] + i, k);
+                    plaintext[  i  ] = c[i]^plaintextHolder[0];
+                    plaintext[i + 1] = c[i+1]^plaintextHolder[1];
+                }
 
             }
             

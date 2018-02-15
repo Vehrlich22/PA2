@@ -67,10 +67,10 @@ public class Tools {
             
             for (int i = 0; i < ints.length * 4; i += 4) {
                 // Take a Intger and separate it into 4 bytes
-                bytes[  i  ] = (byte) ((ints[i / 4] >> 24) & 0x000000FF);
-                bytes[i + 1] = (byte) ((ints[i / 4] >> 16) & 0x000000FF);
-                bytes[i + 2] = (byte) ((ints[i / 4] >>  8) & 0x000000FF);
-                bytes[i + 3] = (byte) ( ints[i / 4]        & 0x000000FF);
+                bytes[  i  ] = (byte) (ints[i / 4] >> 24 & 0x000000FF);
+                bytes[i + 1] = (byte) (ints[i / 4] >> 16 & 0x000000FF);
+                bytes[i + 2] = (byte) (ints[i / 4] >>  8 & 0x000000FF);
+                bytes[i + 3] = (byte) (ints[i / 4] & 0x000000FF);
             }
             
             return bytes;

@@ -40,9 +40,8 @@ public class TinyE {
 //                C0 = P0  E(IV, K)
 //                C1 = P1  E(IV+1, K)
                 Integer[] ciphertextHolder;
-
-                for (int i = 0; i < p.length; i += 2) {
-                    ciphertextHolder = teaEncryption(iv[0] + i,iv[1] + i, k);
+                for (int i = 0; i < p.length; i+=2) {
+                    ciphertextHolder = teaEncryption(iv[0]++, iv[1]++, k);
                     ciphertext[  i  ] = p[i]^ciphertextHolder[0];
                     ciphertext[i + 1] = p[i+1]^ciphertextHolder[1];
                 }
@@ -87,7 +86,7 @@ public class TinyE {
 //                P1 = C1  E(IV+1, K)
                 Integer[] plaintextHolder;
                 for (int i = 0; i < c.length; i+=2) {
-                    plaintextHolder = teaEncryption(iv[0] + i,iv[1] + i, k);
+                    plaintextHolder = teaEncryption(iv[0]++, iv[1]++, k);
                     plaintext[  i  ] = c[i]^plaintextHolder[0];
                     plaintext[i + 1] = c[i+1]^plaintextHolder[1];
                 }

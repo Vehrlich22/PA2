@@ -8,30 +8,35 @@ public class Tools {
             for (int i = 0; i < bs.length; i += 4) {
                 Integer a, b, c, d;
                 
+                // Convert the first byte
                 if (i < bs.length) {
                     a = (Integer) ((bs[  i  ] & 0xFF) << 24);
                 } else {
                     a = 0x00;
                 }
-                
+                                
+                // Convert the second byte
                 if (i+1 < bs.length) {
                     b = (Integer) ((bs[i + 1] & 0xFF) << 16);
                 } else {
                     b = 0x00;
                 } 
-                
+                                
+                // Convert the third byte
                 if (i+2 < bs.length) {
                     c = (Integer) ((bs[i + 2] & 0xFF) << 8);
                 } else {
                     c = 0x00;
                 } 
-                
+                                
+                // Convert the fourth byte
                 if (i+3 < bs.length) {
                     d = (Integer) (bs[i + 3] & 0xFF);
                 } else {
                     d = 0x00;
                 }  
                 
+                // Combine the 4 bytes to a 32bit Integer
                 ints[i / 4] = (a | b | c | d);
             }
             
@@ -44,8 +49,10 @@ public class Tools {
             for (int i = 0; i < s.length(); i += 8) {
                 String hex = "";
                 if (i + 8 <= s.length()) {
+                    // Without padding
                     hex = s.substring(i, i + 8);
                 } else {
+                    // With padding
                     hex = s.substring(i);
                     hex = String.format("%-8s", hex).replace(' ', '0');
                 }
@@ -59,6 +66,7 @@ public class Tools {
             byte[] bytes = new byte[ints.length * 4];
             
             for (int i = 0; i < ints.length * 4; i += 4) {
+                // Take a Intger and separate it into 4 bytes
                 bytes[  i  ] = (byte) ((ints[i / 4] >> 24) & 0x000000FF);
                 bytes[i + 1] = (byte) ((ints[i / 4] >> 16) & 0x000000FF);
                 bytes[i + 2] = (byte) ((ints[i / 4] >>  8) & 0x000000FF);
@@ -72,6 +80,7 @@ public class Tools {
             String hex = "";
             
             for (Integer i : ints) {
+                // Convert an Integer to a hex string
                 hex += Integer.toHexString(i);
             }
             
